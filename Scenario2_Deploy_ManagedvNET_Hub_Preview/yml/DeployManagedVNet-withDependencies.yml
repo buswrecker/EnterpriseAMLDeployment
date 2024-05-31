@@ -1,0 +1,98 @@
+$schema: https://azuremlschemas.azureedge.net/latest/workspace.schema.json
+name: Hub-with-Dependencies
+ 
+location: australiaeast
+display_name: managedvNET-AML-Hub-withDependencies
+description: A WorkspaceHub Deployed in ManagedvNET allow only approved outbound config
+storage_account: /subscriptions/aea906c4-b174-444c-9568-9b6bb773121a/resourceGroups/WorkspaceHubManagedvNET/providers/Microsoft.Storage/storageAccounts/workspacehubmanaged03213
+container_registry: /subscriptions/aea906c4-b174-444c-9568-9b6bb773121a/resourceGroups/WorkspaceHubManagedvNET/providers/Microsoft.ContainerRegistry/registries/workspacehubmanagedcr3213
+key_vault: /subscriptions/aea906c4-b174-444c-9568-9b6bb773121a/resourceGroups/WorkspaceHubManagedvNET/providers/Microsoft.KeyVault/vaults/workspacehubkv3231
+application_insights: /subscriptions/aea906c4-b174-444c-9568-9b6bb773121a/resourceGroups/WorkspaceHubManagedvNET/providers/Microsoft.insights/components/workspacehubappinsights
+ 
+managed_network:
+  isolation_mode: allow_only_approved_outbound
+  outbound_rules:
+  - name: Anaconda
+    type: fqdn
+    destination: '*.anaconda.com'
+  - name: AnacondaOrg
+    type: fqdn
+    destination: "*.anaconda.org"
+  - name: Pypi
+    type: fqdn
+    destination: "pypi.org"
+  - name: PyTorch
+    type: fqdn
+    destination: "pytorch.org"
+  - name: Pythonhosted
+    type: fqdn
+    destination: "*.pythonhosted.org"
+  - name: PyTorchStar
+    type: fqdn
+    destination: "*.pytorch.org"
+  - name: TensorflowStar
+    type: fqdn
+    destination: "*.tensorflow.org"
+  - name: VsCodeDev
+    type: fqdn
+    destination: "*.vscode.dev"
+  - name: VsCodeBlob
+    type: fqdn
+    destination: "vscode.blob.core.windows.net"
+  - name: GalleryAssets
+    type: fqdn
+    destination: "*.gallerycdn.vsassets.io"
+  - name: RawGithub
+    type: fqdn
+    destination: "raw.githubusercontent.com"
+  - name: Vscodeunpkg
+    type: fqdn
+    destination: "*.vscode-unpkg.net"
+  - name: VscodeCDN
+    type: fqdn
+    destination: "*.vscode-cdn.net"
+  - name: VScodeexperiments
+    type: fqdn
+    destination: "*.vscodeexperiments.azureedge.net"
+  - name: defaulttas
+    type: fqdn
+    destination: "default.exp-tas.com"
+  - name: codevsstudio
+    type: fqdn
+    destination: "code.visualstudio.com"
+  - name: updatecode
+    type: fqdn
+    destination: "update.code.visualstudio.com"
+  - name: vo
+    type: fqdn
+    destination: "*.vo.msecnd.net"
+  - name: marketplace
+    type: fqdn
+    destination: "marketplace.visualstudio.com"
+  - name: vscodedownload
+    type: fqdn
+    destination: "vscode.download.prss.microsoft.com"
+  - name: dockerio
+    type: fqdn
+    destination: "docker.io"
+  - name: dockeriostar
+    type: fqdn
+    destination: "*.docker.io"
+  - name: dockerstar
+    type: fqdn
+    destination: "*.docker.com"
+  - name: productioncloudflare
+    type: fqdn
+    destination: "production.cloudflare.docker.com"
+  - name: cdnauth
+    type: fqdn
+    destination: "cdn.auth0.com"
+  - name: huggingface
+    type: fqdn
+    destination: "cdn-lfs.huggingface.co"
+  - name: github
+    type: fqdn
+    destination: "github.com"
+ 
+tags:
+  purpose: testmanagedvnet
