@@ -10,11 +10,22 @@ resource search 'Microsoft.Search/searchServices@2024-03-01-preview' = {
   sku: {
     name: sku
   }
+  identity: {
+    type: 'SystemAssigned'
+  }
   properties: {
+    authOptions: {
+      aadOrApiKey: {
+        aadAuthFailureMode: 'http401WithBearerChallenge'
+      }
+    }
     replicaCount: 1
     partitionCount: 1
     hostingMode: hostingMode
     publicNetworkAccess: publicNetworkAccess
+    networkRuleSet: {
+      bypass: 'AzureServices'
+    }
   }
   tags: {}
   dependsOn: []

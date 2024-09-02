@@ -55,7 +55,7 @@ resource search 'Microsoft.Search/searchServices@2021-04-01-preview' existing = 
   name: aiSearchName
 }
 
-resource workspace 'Microsoft.MachineLearningServices/workspaces@2024-04-01' = {
+resource workspace 'Microsoft.MachineLearningServices/workspaces@2024-07-01-preview' = {
   tags: tagValues
   name: workspaceName
   location: location
@@ -69,6 +69,7 @@ resource workspace 'Microsoft.MachineLearningServices/workspaces@2024-04-01' = {
     name: sku
   }
   properties: {
+    allowRoleAssignmentOnRG: true
     friendlyName: friendlyName
     description: description
     storageAccount: storageAccountId
@@ -81,37 +82,47 @@ resource workspace 'Microsoft.MachineLearningServices/workspaces@2024-04-01' = {
   }
 }
 
-resource aiServiceConnection 'Microsoft.MachineLearningServices/workspaces/connections@2024-04-01' = {
+// // Contributor role assignment to azure search
+// resource searchContributorRole 'Microsoft.Authorization/roleAssignments@2022-04-01' = if (!empty(aiSearchName)) {
+//   name: guid(subscription().id, resourceGroup().id, aiSearchName, 'Contributor')
+//   properties: {
+//     principalId: search.identity.principalId
+//     principalType: 'ServicePrincipal'
+//     roleDefinitionId: subscriptionResourceId(
+//       'Microsoft.Authorization/roleDefinitions',
+//       'b24988ac-6180-42a0-ab88-20f7382dd24c'
+//     )
+//   }
+// }
+
+resource aiServiceConnection 'Microsoft.MachineLearningServices/workspaces/connections@2024-07-01-preview' = {
   parent: workspace
   name: '${aiStudioService}-aiservice-connection'
   properties: {
     category: 'AIServices'
-    authType: 'ApiKey'
+    authType: 'AAD'
     isSharedToAll: true
     target: aiStudioServiceResource.properties.endpoints['OpenAI Language Model Instance API']
+    peRequirement: 'Required'
     metadata: {
       ApiVersion: '2023-07-01-preview'
       ApiType: 'azure'
       ResourceId: aiStudioServiceResource.id
     }
-    credentials: {
-      key: aiStudioServiceResource.listKeys().key1
-    }
   }
 }
 
-resource searchConnection 'Microsoft.MachineLearningServices/workspaces/connections@2024-04-01' = if (!empty(aiSearchName)) {
+resource searchConnection 'Microsoft.MachineLearningServices/workspaces/connections@2024-07-01-preview' = if (!empty(aiSearchName)) {
   parent: workspace
   name: '${aiSearchName}-connection'
   properties: {
     category: 'CognitiveSearch'
-    authType: 'ApiKey'
+    authType: 'AAD'
     isSharedToAll: true
     target: 'https://${search.name}.search.windows.net/'
-    credentials: {
-      key: !empty(aiSearchName) ? search.listAdminKeys().primaryKey : ''
-    }
+    peRequirement: 'Required'
   }
 }
 
 output workspaceId string = workspace.id
+output workspaceName string = workspace.name

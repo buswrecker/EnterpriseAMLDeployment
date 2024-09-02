@@ -11,6 +11,9 @@ resource aiStudioService 'Microsoft.CognitiveServices/accounts@2023-10-01-previe
     name: sku
   }
   kind: kind
+  identity: {
+    type: 'SystemAssigned'
+  }
   properties: {
     customSubDomainName: name
     networkAcls: {
@@ -24,3 +27,4 @@ resource aiStudioService 'Microsoft.CognitiveServices/accounts@2023-10-01-previe
 
 output aiStudioServiceId string = aiStudioService.id
 output aiStudioServiceName string = aiStudioService.name
+output aiStudioServicePrincipalId string = aiStudioService.identity.principalId
