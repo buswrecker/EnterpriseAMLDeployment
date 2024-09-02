@@ -11,6 +11,9 @@ resource registry 'Microsoft.ContainerRegistry/registries@2022-02-01-preview' = 
   sku: {
     name: containerRegistrySku
   }
+  identity: {
+    type: 'SystemAssigned'
+  }
   tags: tags
   properties: {
     adminUserEnabled: true
