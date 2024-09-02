@@ -1,0 +1,12 @@
+{
+    "projects": [
+      {
+        "name": "<PROJECT NAME>",
+        "displayName": "<PROJECT DISPLAY NAME>"
+      },
+      {
+        "name": "<PROJECT NAME 2>",
+        "displayName": "<PROJECT DISPLAY NAME 2>"
+      }
+    ]
+}

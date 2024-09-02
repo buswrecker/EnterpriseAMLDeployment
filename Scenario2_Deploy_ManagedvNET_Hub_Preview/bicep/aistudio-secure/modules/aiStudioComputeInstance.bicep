@@ -512,26 +512,32 @@ param assignedUserTenant string
 @description('Enable or disable node public IP address provisioning')
 param enableNodePublicIp bool = false
 
-resource workspaceName_computeInstance 'Microsoft.MachineLearningServices/workspaces/computes@2024-04-01' = {
-  name: '${workspaceName}/${computeInstanceName}'
+resource workspace 'Microsoft.MachineLearningServices/workspaces@2024-04-01' existing = {
+  name: workspaceName
+}
+
+resource workspaceName_computeInstance 'Microsoft.MachineLearningServices/workspaces/computes@2024-07-01-preview' = {
+  parent: workspace
+  name: computeInstanceName
   location: location
+  identity: {
+    type: 'SystemAssigned'
+  }
   properties: {
-    computeType: 'ComputeInstance'
     disableLocalAuth: disableLocalAuth
+    computeType: 'ComputeInstance'
     properties: {
+      computeInstanceAuthorizationType: 'personal'
+      enableNodePublicIp: enableNodePublicIp
       vmSize: vmSize
       applicationSharingPolicy: 'Personal'
-      sshSettings: {
-        sshPublicAccess: sshAccess
-      }
-      computeInstanceAuthorizationType: 'personal'
+      idleTimeBeforeShutdown: 'PT60M'
       personalComputeInstanceSettings: {
         assignedUser: {
           objectId: assignedUserId
           tenantId: assignedUserTenant
         }
       }
-      enableNodePublicIp: enableNodePublicIp
     }
   }
 }
