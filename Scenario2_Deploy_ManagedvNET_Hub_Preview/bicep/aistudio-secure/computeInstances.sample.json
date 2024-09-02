@@ -1,0 +1,12 @@
+{
+  "cis": [
+    {
+      "name": "nameCi1",
+      "assignedUserId": "<USER ID>"
+    },
+    {
+      "name": "nameCi2",
+      "assignedUserId": "<USER ID 2>"
+    }
+  ]
+}
